@@ -1,0 +1,16 @@
+*.iml
+.idea/*
+!.idea/codeStyles
+!.idea/dictionaries
+.gradle
+/local.properties
+
+.DS_Store
+
+build
+/captures
+/databases
+.externalNativeBuild
+version
+/ui/
+paperwork.json

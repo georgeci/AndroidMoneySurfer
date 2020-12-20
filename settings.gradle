@@ -1,0 +1,4 @@
+rootProject.name = "MoneySurfer"
+include ':app'
+include ':data'
+include ':domain'
