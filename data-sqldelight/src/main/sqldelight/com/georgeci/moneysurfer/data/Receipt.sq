@@ -1,0 +1,23 @@
+CREATE TABLE receipt (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  summ REAL NOT NULL,
+  account_id INTEGER NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM receipt;
+
+selectById:
+SELECT *
+FROM receipt
+WHERE id = ?;
+
+selectByAccountId:
+SELECT *
+FROM receipt
+WHERE account_id = ?;
+
+insert:
+INSERT INTO receipt(summ, account_id)
+VALUES (?, ?);
