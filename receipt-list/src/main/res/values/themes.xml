@@ -1,0 +1,11 @@
+<resources>
+
+    <style name="Theme.MoneySurfer.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MoneySurfer.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MoneySurfer.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
