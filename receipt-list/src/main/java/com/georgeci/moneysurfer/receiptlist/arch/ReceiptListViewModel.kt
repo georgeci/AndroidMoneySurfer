@@ -1,48 +1,52 @@
 package com.georgeci.moneysurfer.receiptlist.arch
 
-import com.georgeci.moneysurfer.mvi.CoroutineViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.georgeci.moneysurfer.domain.entity.Receipt
+import com.georgeci.moneysurfer.mvi.Store
+import com.georgeci.moneysurfer.mvi.impl.Reducer
+import com.georgeci.moneysurfer.mvi.impl.SyncSimpleFeature
 import javax.inject.Inject
-import kotlin.random.Random
 
-data class ReceiptListState(
-    val items: List<ReceiptItemViewModel>,
-    val i: Int
-)
+abstract class FeatureViewModel<STATE : Any, INTENT : Any, NEWS : Any>(
+    private val feature: Store<STATE, INTENT, NEWS>
+) : ViewModel(), Store<STATE, INTENT, NEWS> by feature {
 
-sealed class ReceiptListIntent {
-    object Plus : ReceiptListIntent()
-    object Minus : ReceiptListIntent()
-}
+    init {
+        feature.launch(viewModelScope)
+    }
 
-class ReceiptListViewModel @Inject constructor() :
-    CoroutineViewModel<ReceiptListState, ReceiptListIntent, Nothing>(
-        ReceiptListState(
-            emptyList(),
-            0
-        )
-    ) {
-
-    override fun reduceState(
-        oldState: ReceiptListState,
-        intent: ReceiptListIntent
-    ): Flow<ReceiptListState> {
-        return flowOf(
-            oldState.copy(
-                i = oldState.i + 1,
-                items = oldState.items.plus(ReceiptItemViewModel(Random.nextInt(-10, 10)))
-            )
-        )
+    override fun onCleared() {
+        super.onCleared()
+        feature.dispose()
     }
 }
 
-class ReceiptItemViewModel(initial: Int) :
-    CoroutineViewModel<Int, Unit, Nothing>(initial) {
+class ReceiptListViewModel @Inject constructor() :
+    FeatureViewModel<ReceiptListState, ReceiptListIntent, Nothing>(
+        feature = SyncSimpleFeature(
+            initialState = ReceiptListState(emptyList()),
+            syncReducer = ReceiptListReducer()
+        )
+    ) {
 
-    override fun reduceState(oldState: Int, intent: Unit): Flow<Int> {
-        return flowOf(oldState + 1)
+
+    private class ReceiptListReducer() :
+        Reducer<ReceiptListState, ReceiptListIntent> {
+
+        override fun invoke(state: ReceiptListState, intent: ReceiptListIntent): ReceiptListState {
+            return when (intent) {
+                is ReceiptListIntent.ReceiptClick -> TODO()
+                ReceiptListIntent.Create -> state.copy(
+                    items = state.items.plus(
+                        Receipt(
+                            0,
+                            100.0,
+                            100
+                        )
+                    )
+                )
+            }
+        }
     }
 }
