@@ -1,12 +1,13 @@
 package com.georgeci.moneysurfer.receiptlist.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +29,10 @@ fun ReceiptRow(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier.clickable(
+                onClick = { onClick(item) },
+                indication = rememberRipple()
+            ).padding(horizontal = 8.dp),
         ) {
             BasicText(text = "Counter: ${item.id} : ${item.summ}")
         }
